@@ -656,6 +656,15 @@ replace uijan_cdep_fcpi =  cdepjan_fcpi   if cdepjul != .
 
 gen uijan_dep_fcpi = uijan_cdep_fcpi - uijan_fcpi
 
+cap drop lguijul_cdep_fcpi 
+gen lguijul_cdep_fcpi = log(uijul_cdep_fcpi)
+cap drop lguijan_cdep_fcpi 
+gen lguijan_cdep_fcpi = log(uijan_cdep_fcpi)
+cap drop uiave_cdep_fcpi 
+gen uiave_cdep_fcpi = (uijul_cdep_fcpi + uijan_cdep_fcpi)/2
+cap drop lguiave_cdep_fcpi
+gen lguiave_cdep_fcpi = log(uiave_cdep_fcpi)
+
 
 replace actual_UI_AWB= actual_UI_AWB / food_cpi * cpi_denominator
 replace actual_UI= actual_UI/ food_cpi * cpi_denominator
@@ -781,4 +790,3 @@ save "Processed\ASEC_REG.dta", replace
 
 
 
-z

@@ -1,4 +1,11 @@
 
+
+/*-------------------------------------------------------------------------
+*Impact of SNAP Takeup and SNAP Income: Robustness Checks
+*Data: CPS Dec
+---------------------------------------------------------------------------*/
+
+
 use "Processed\REG.dta", clear
 
 do "Scripts\Preamble-Dec-Labels.do"

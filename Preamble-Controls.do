@@ -13,7 +13,7 @@ global fest i.gestfips i.year i.gestfips##c.year_trend
 
 global ui_month uijul
 global ui ${ui_month}_cdep_fcpi  alt_totwks  //ui_cdep
-global ui_ddd 	${ui_month}_cdep_fcpi_eligible alt_totwks_eligible   ${ui_month}_cdep_fcpi alt_totwks   eligible  //ui_cdep_eligible  ui_cdep
+global ui_ddd 	${ui_month}_cdep_fcpi_eligible alt_totwks_eligible   ${ui_month}_cdep_fcpi alt_totwks   eligible  
 global lgui  lg${ui_month}_cdep_fcpi  alt_totwks  
 global ui2 uiave_cdep_fcpi alt_totwks  // ui_cdep
 
