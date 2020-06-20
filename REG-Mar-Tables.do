@@ -30,7 +30,6 @@ do "Scripts\Preamble-Eligible-Interactions.do"
 
 
 
-
 *<< TABLE 1: IMPACT ON FOOD STAMP TAKEUP >> 
 /* Dependent Variable: Dummies of STAMP Take-Up status
 
@@ -216,7 +215,7 @@ estimate store m2
 
 *** impact on food stamp value
 quietly reg snap_val_fcpi_pos $ui_ddd  $controls eligible_*  i.gestfips##i.eligible  i.year##i.eligible   $wgt , cluster(state)	
-quietly su snap_val_fcpi  if e(sample) == 1
+quietly su snap_val_fcpi_pos  if e(sample) == 1
 estadd scalar outcome_mean = r(mean)
 estimate store m3
 

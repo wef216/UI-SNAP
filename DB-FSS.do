@@ -459,7 +459,7 @@ replace fsrasch = . if inlist(fsrasch, 98, 99)
  
 *< < <OTHER SURVEY RELATED VARIABLES > > > 
 // generate the year variables
-gen fss_year = year
+gen survey_year = year
 
 *KEEP THE HOUSEHOLD HOLD: SO each observation is represents a household.
 keep if relate == 101
@@ -495,8 +495,8 @@ keep if _merge == 3 | _merge == 1
 drop _merge
 
 * match the state UI benefits to the CPS-Match data
-merge m:1 gestfips year using "Data\ui_data_2018.dta",force
-keep if _merge==3 | _merge == 1
+merge m:1 gestfips year using "Data\ui_data_2020.dta",force
+*keep if _merge==3 | _merge == 1
 drop _merge
 
 * match the ui duration weeks
@@ -514,22 +514,23 @@ drop _merge
 * match the state characteristics
 *merge m:1 state year using "$data/US_Current_Policy.dta",force
 merge m:1 state year using "Data\US_Current_Policy_1980_2018.dta",force
-keep if _merge == 3 | _merge == 1
+//keep if _merge == 3 | _merge == 1
 drop _merge
 
 
 * merge the union coverage data
 cap drop _merge
-merge m:1 statelong year using "Data\union_coverage_1977_2017.dta", force
-keep if _merge == 3 |  _merge == 1
-
+merge m:1 state year using "Data\union_coverage_1977_2019.dta", force
+*keep if _merge == 3 |  _merge == 1
+cap drop _merge
+merge m:1 state year using "Data\union_membership_1977_2019.dta", force
 
 * merge the CPI data
 cap drop _merge
 merge m:1 year using  "Data\US_CPI.dta", force
 
 cap drop _merge
-merge m:1 year using  "Data\US_Food_CPI.dta", force
+merge m:1 year using  "Data\US_Food_CPI_2020.dta", force
 
 
 

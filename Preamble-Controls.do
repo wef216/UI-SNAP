@@ -2,8 +2,8 @@
 
 *<< Set globals for regression >>
  global xvar    hh_edu_hs_pr  hh_edu_col_pr hh_edu_univ_pr  hh_age20t30_r hh_age30t40_r  hh_age40t55_r hh_ageu20_r   age age2 marital2  white  kidu6 hh_psndg1 hh_psndg2 hh_psndg3  
-global zvar1   unemploymentrate union_cov  gdp_state  perchild    
-global zvar2    snap_2p  snap_ratio  nslp_ratio3 sbp_ratio3 eitc_2p 
+global zvar1   unemploymentrate union_mem  gdpp_state  povertyrate  //perchild
+global zvar2    snap_2p  snap_ratio  nslp_ratio3 sbp_ratio3 //eitc_2p snap_3p eitc_3p
 
 global control0 $xvar  
 global control $xvar $zvar1 
@@ -25,7 +25,8 @@ global agemax 19
 drop if agemin >= $agemin
 drop if agemax <= $agemax
 
-keep if year >= 1999
+keep if survey_year >= 1999
+keep if survey_year <= 2017
 keep if  hh_psn <= 20
 
 
@@ -37,4 +38,8 @@ global export_option = 0
 
 
 
-
+/*
+ global xvar    hh_edu_hs_pr  hh_edu_col_pr hh_edu_univ_pr  hh_age20t30_r hh_age30t40_r  hh_age40t55_r hh_ageu20_r   age age2 marital2  white  kidu6 hh_psndg1 hh_psndg2 hh_psndg3  
+global zvar1   unemploymentrate union_mem  gdpp_state  povertyrate //perchild
+global zvar2    snap_2p  snap_ratio  nslp_ratio3 sbp_ratio3 eitc_2p //snap_2p eitc_3p
+*/

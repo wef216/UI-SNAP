@@ -413,8 +413,8 @@ keep if relate == 101
 
 * CREATE LAGGED TIME FOR MATCH WITH EXTERNAL DATA SET 
 // generate the year variables for the year lagged, and match the state information in the previous year.
-gen aesc_year = year
-replace year = aesc_year - 1   //"1995 --> 1994"
+gen survey_year = year
+replace year = survey_year - 1   //"1995 --> 1994"
 
 save "Processed\ASEC.dta", replace
 
@@ -437,8 +437,8 @@ keep if _merge == 3 | _merge == 1
 drop _merge
 
 * match the state UI benefits to the CPS-Match data
-merge m:1 gestfips year using "Data\ui_data_2018.dta",force
-keep if _merge==3 | _merge == 1
+merge m:1 gestfips year using "Data\ui_data_2020.dta",force
+//keep if _merge==3 | _merge == 1
 drop _merge
 
 * match the ui duration weeks
@@ -467,28 +467,29 @@ weekly: AL, NY, Missouri, North Carolina, South Dakota, Wisconsin, Louisiana, No
 
 * match the state characteristics
 merge m:1 state year using "Data\US_Current_Policy_1980_2018.dta",force
-keep if _merge == 3 | _merge == 1
+//keep if _merge == 3 | _merge == 1
 drop _merge
 
 
 * merge the union coverage data
 cap drop _merge
-merge m:1 statelong year using "Data\union_coverage_1977_2017.dta", force
-keep if _merge == 3 |  _merge == 1
-
+merge m:1 state year using "Data\union_coverage_1977_2019.dta", force
+*keep if _merge == 3 |  _merge == 1
+cap drop _merge
+merge m:1 state year using "Data\union_membership_1977_2019.dta", force
 
 * merge the CPI data
 cap drop _merge
 merge m:1 year using  "Data\US_CPI.dta", force
 
 cap drop _merge
-merge m:1 year using  "Data\US_Food_CPI.dta", force
+merge m:1 year using  "Data\US_Food_CPI_2020.dta", force
 
 
 * merge actual UI data
 cap drop _merge
 merge m:1 state year using "Processed\actual_ui_1995_2017.dta", force
-keep if _merge == 3
+keep if _merge == 3 | _merge == 1
 
 
 
