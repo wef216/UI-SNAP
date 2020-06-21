@@ -461,6 +461,9 @@ replace fsrasch = . if inlist(fsrasch, 98, 99)
 // generate the year variables
 gen survey_year = year
 
+gen survey_month = month
+replace month = 7   //"for merge with the unemployment weeks"
+
 *KEEP THE HOUSEHOLD HOLD: SO each observation is represents a household.
 keep if relate == 101
 

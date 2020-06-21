@@ -11,6 +11,8 @@ use "Processed\ASEC_REG.dta", clear
 
 *<< IMPORT THE CONTROLS AND SAMPLES CRITERIOR >>
 do "Scripts\Preamble-Controls.do"
+do "Scripts\Preamble-Sample-Criteria.do"
+
 global wgt   "[pw = asecwth]"
 
 // create the indicator for Unemployed HH
@@ -18,7 +20,6 @@ cap drop eligible
 gen eligible = 0 if  ui_finc_fcpi_ave <= 0   &  snap_val <=24900
 replace eligible = 0 if  ui_finc_fcpi_ave == .   &  snap_val <=24900
 replace eligible = 1 if  ui_finc_fcpi_ave > 0 & ui_finc_fcpi_ave < . & snap_val <= 24900
-// (ui_finc_fcpi_ave >=  actual_UI_AWB * 0.0001 & ui_finc_fcpi_ave < . ) & snap_val <= 24900   //& ui_finc_fcpi_ave <= uijul_fcpi * 10000 * alt_totwks
 
 
 label var eligible  "UI Eligible"

@@ -11,6 +11,7 @@ use "Processed\REG.dta", clear
 *<< IMPORT THE CONTROLS AND SAMPLES CRITERIOR >>
 do "Scripts\Preamble-Dec-Labels.do"
 do "Scripts\Preamble-Controls.do"
+do "Scripts\Preamble-Sample-Criteria.do"
 
 global wgt   " [pw = fssuppwth] "
 
@@ -18,7 +19,7 @@ global wgt   " [pw = fssuppwth] "
 
 // create the indicator for Unemployed HH
 cap drop eligible_p1
-gen eligible_p1 = 1 if   hh_jobloserm_dur52 > 0 & hh_jobloserm_dur52 !=.  
+gen eligible_p1 = 1 if   hh_jobloser_dur52 > 0 & hh_jobloser_dur52 !=.  
 replace eligible_p1 = 0 if    hh_unemp == 0
 
 do "Scripts\Preamble-Hetero-Classifications.do"

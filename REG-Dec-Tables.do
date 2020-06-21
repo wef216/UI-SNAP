@@ -11,6 +11,7 @@ use "Processed\REG.dta", clear
 *<< IMPORT THE CONTROLS AND SAMPLES CRITERIOR >>
 do "Scripts\Preamble-Dec-Labels.do"
 do "Scripts\Preamble-Controls.do"
+do "Scripts\Preamble-Sample-Criteria.do"
 
 global wgt   " [pw = fssuppwth] "
 

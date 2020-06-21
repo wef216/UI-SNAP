@@ -11,6 +11,8 @@ use "Processed\REG.dta", clear
 *<< IMPORT THECONTROLS AND SAMPEL CRITERIOR >>
 do "Scripts\Preamble-Dec-Labels.do"
 do "Scripts\Preamble-Controls.do"
+do "Scripts\Preamble-Sample-Criteria.do"
+
 
 global wgt   " [pw = fssuppwth] "
 
@@ -18,7 +20,7 @@ global wgt   " [pw = fssuppwth] "
 
 // create the indicator for Unemployed HH
 cap drop eligible
-gen eligible = 1 if   hh_jobloserm_dur52 > 0 & hh_jobloserm_dur52 !=.  
+gen eligible = 1 if   hh_jobloser_dur52 > 0 & hh_jobloser_dur52 !=.  
 replace eligible = 0 if    hh_unemp == 0
 
 label var eligible  "UI Eligible"

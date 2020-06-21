@@ -1,6 +1,15 @@
 
 
 
+/*-------------------------------------------------------------------------
+*State-level UI & Characteristics (lag and forward)
+*
+---------------------------------------------------------------------------*/
+
+
+
+
+*<< STATE-LEVEL UI : LAG AND FORWARD >>
 
 use "Data\ui_data_2020.dta", clear
 
@@ -13,27 +22,27 @@ gen cpi_denominator = 170.313   // if 2016 166.463
 
 
 * UI
+// UI without dependent allowance
 replace uijan = (uijan / 100)   // /cpi * 240.007
 replace uijul = (uijul / 100)    // / cpi * 240.007
 replace  cdepjul = cdepjul/100
 replace cdepjan = cdepjan/100
 
-cap drop uijul_cdep
-gen uijul_cdep = uijul if cdepjul == .
-replace uijul_cdep =  cdepjul  if cdepjul != .
-
-
+// UI with dependent allowance
 cap drop uijan_cdep
 gen uijan_cdep = uijan if cdepjul == .
 replace uijan_cdep =  cdepjan   if cdepjul != .
 
+cap drop uijul_cdep
+gen uijul_cdep = uijul if cdepjul == .
+replace uijul_cdep =  cdepjul  if cdepjul != .
 replace uijul_cdep = uijan_cdep if year == 2020
-
-gen uijul_cdep_fcpi =  uijul_cdep /food_cpi * cpi_denominator
-gen uijan_cdep_fcpi =  uijan_cdep /food_cpi * cpi_denominator
 
 gen uiave_cdep = (uijul_cdep + uijan_cdep)/2
 
+// UI CPI adjustment
+gen uijul_cdep_fcpi =  uijul_cdep /food_cpi * cpi_denominator
+gen uijan_cdep_fcpi =  uijan_cdep /food_cpi * cpi_denominator
 gen uiave_cdep_fcpi = (uijul_cdep_fcpi + uijan_cdep_fcpi)/2
 
 *replace uijul_cdep_fcpi = uijan_cdep_fcpi if month == 4
@@ -46,27 +55,39 @@ xtset gestfips year
 forv j = 1/5{
 gen uijul_cdep_l`j' = L`j'.uijul_cdep
 gen uijul_cdep_fcpi_l`j' = uijul_cdep_l`j'  /food_cpi * cpi_denominator  //- uijul_cdep_fcpi
+label var uijul_cdep_fcpi_l`j' "Jul UI with Dependent Allowance: Lag `j' Yr"
 gen uijul_cdep_fcpi2_l`j' = L`j'.uijul_cdep_fcpi
+label var uijul_cdep_fcpi2_l`j' "Jul UI with Dependent Allowance: Lag `j' Yr"
 
 gen uijul_cdep_f`j' = F`j'.uijul_cdep
 gen uijul_cdep_fcpi_f`j' = uijul_cdep_f`j'  /food_cpi * cpi_denominator  //- uijul_cdep_fcpi
+label var uijul_cdep_fcpi_f`j' "Jul UI with Dependent Allowance: Forward `j' Yr"
 gen uijul_cdep_fcpi2_f`j' = F`j'.uijul_cdep_fcpi
+label var uijul_cdep_fcpi2_f`j' "Jul UI with Dependent Allowance: Forward `j' Yr"
 
 gen uijan_cdep_l`j' = L`j'.uijan_cdep
 gen uijan_cdep_fcpi_l`j' = uijan_cdep_l`j'  /food_cpi * cpi_denominator  //- uijul_cdep_fcpi
+label var uijan_cdep_fcpi_l`j' "Jan UI with Dependent Allowance: Lag `j' Yr"
 gen uijan_cdep_fcpi2_l`j' = L`j'.uijan_cdep_fcpi
+label var uijan_cdep_fcpi2_l`j' "Jan UI with Dependent Allowance: Lag `j' Yr"
 
 gen uijan_cdep_f`j' = F`j'.uijan_cdep
 gen uijan_cdep_fcpi_f`j' = uijan_cdep_f`j'  /food_cpi * cpi_denominator  //- uijul_cdep_fcpi
+label var uijan_cdep_fcpi_f`j' "Jul UI with Dependent Allowance: Forward `j' Yr"
 gen uijan_cdep_fcpi2_f`j' = F`j'.uijan_cdep_fcpi
+label var uijan_cdep_fcpi2_f`j' "Jul UI with Dependent Allowance: Forward `j' Yr"
 
 gen uiave_cdep_l`j' = L`j'.uiave_cdep
 gen uiave_cdep_fcpi_l`j' = uiave_cdep_l`j'  /food_cpi * cpi_denominator  //- uijul_cdep_fcpi
+label var uiave_cdep_fcpi_l`j' "Ave UI with Dependent Allowance: Lag `j' Yr"
 gen uiave_cdep_fcpi2_l`j' = L`j'.uiave_cdep_fcpi
+label var uiave_cdep_fcpi2_l`j' "Ave UI with Dependent Allowance: Lag `j' Yr"
 
 gen uiave_cdep_f`j' = F`j'.uiave_cdep
 gen uiave_cdep_fcpi_f`j' = uiave_cdep_f`j'  /food_cpi * cpi_denominator  //- uijul_cdep_fcpi
+label var uiave_cdep_fcpi_f`j' "Ave UI with Dependent Allowance: Forward `j' Yr"
 gen uiave_cdep_fcpi2_f`j' = F`j'.uiave_cdep_fcpi
+label var uiave_cdep_fcpi2_f`j' "Ave UI with Dependent Allowance: Forward `j' Yr"
 }
 
 
@@ -84,8 +105,13 @@ save "Processed\UI_data_lead_forward.dta", replace
 
 
 
-use "Processed\REG.dta", clear
 
+
+
+
+*<< STATE-LEVEL CHARACTERISTICS: LAG AND FORWARD>>
+use "Processed\REG.dta", clear
+do "Scripts\Preamble-Controls.do"
 
 duplicates drop state year , force
 keep $zvar1 $zvar2 state year gestfips statelong alt_totwks

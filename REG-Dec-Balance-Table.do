@@ -19,6 +19,8 @@ use "Processed\REG.dta", clear
 *<< IMPORT THE CONTROLS AND SAMPLES CRITERIOR >>
 do "Scripts\Preamble-Dec-Labels.do"
 do "Scripts\Preamble-Controls.do"
+do "Scripts\Preamble-Sample-Criteria.do"
+
 
 global wgt   " [pw = fssuppwth] "
 global indicatorsb `" indicate("State-Level Welfare Policies = snap_2p" "State-Level Economic Attributes = unemploymentrate" "Household Characteristics =  age"  "Year FE = *.year" "State FE = *.gestfips")   "'
@@ -26,7 +28,7 @@ global indicatorsb `" indicate("State-Level Welfare Policies = snap_2p" "State-L
 
 // create the indicator for Unemployed HH
 cap drop eligible
-gen eligible = 1 if   hh_jobloserm_dur52 > 0 & hh_jobloserm_dur52 !=.  
+gen eligible = 1 if   hh_jobloser_dur52 > 0 & hh_jobloser_dur52 !=.  
 replace eligible = 0 if    hh_unemp == 0
 
 label var eligible  "UI Eligible"

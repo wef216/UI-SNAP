@@ -415,6 +415,8 @@ keep if relate == 101
 // generate the year variables for the year lagged, and match the state information in the previous year.
 gen survey_year = year
 replace year = survey_year - 1   //"1995 --> 1994"
+gen survey_month = month
+replace month = 7   //"for merge with the unemployment weeks"
 
 save "Processed\ASEC.dta", replace
 
@@ -427,6 +429,7 @@ save "Processed\ASEC.dta", replace
 								*** MERGE WITH EXTERNAL DATA SET *** 
 *---------------------------------------------------------------------------------------------------------*
 /* ALL THE STATE LEVEL ECONOMIC CHARACTERISTICS ARE MATCHED TO THE PREVIOUS YEAR*/
+use "Processed\ASEC.dta", clear
 
 *< < <  MERGING > > > *
 rename statefip gestfips
