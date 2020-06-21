@@ -3,7 +3,7 @@
 *<< Set globals for regression >>
  global xvar    hh_edu_hs_pr  hh_edu_col_pr hh_edu_univ_pr  hh_age20t30_r hh_age30t40_r  hh_age40t55_r hh_ageu20_r   age age2 marital2  white  kidu6 hh_psndg1 hh_psndg2 hh_psndg3  
 global zvar1   unemploymentrate union_mem  gdpp_state  povertyrate 
-global zvar2    snap_2p  snap_ratio  nslp_ratio3 sbp_ratio3 eitc_2p  
+global zvar2    snap_2p  snap_ratio  nslp_ratio3 sbp_ratio3 eitc_2p  //eitc_refund
 
 global control0 $xvar  
 global control $xvar $zvar1 
@@ -24,7 +24,7 @@ global ui2 uiave_cdep_fcpi alt_totwks  // ui_cdep
  global indicators `" indicate("State-Level Welfare Policies = snap_2p" "State-Level Economic Attributes = unemploymentrate" "Household Characteristics =  age"  "Year FE = *.year" "State FE = *.gestfips" "State Linear Trend = *.year_trend")   "'
  global indicatorsddd `" indicate("Household Characteristics =  age" "State Characteristics = unemploymentrate" "State Welfare Characteristics = snap_2p" "Year FE = *.year" "State FE = *.gestfips")  "'
 
-global export_option = 0
+global export_option = 1
 
 
 

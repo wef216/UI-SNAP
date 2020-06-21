@@ -95,7 +95,7 @@ esttab m1 m2 m3 m4 using "Results\Mar_SNAP_Takeup",
 cap est clear
 /* ONLY CONTROL FOR HOUSEHOLD FEATURES */
 quietly reg snap_val_fcpi_pos $ui $control0 $fes  $wgt if eligible == 1,  cluster(state)	
-quietly su snap_val_fcpi  if e(sample) == 1 
+quietly su snap_val_fcpi_pos  if e(sample) == 1 
 estadd scalar outcome_mean = r(mean)
 eststo m1
 
@@ -162,7 +162,7 @@ eststo m2
 
 *** impact on food stamp value
 quietly reg snap_val_fcpi_pos $ui $controls $fes  $wgt if eligible == 0,  cluster(state)	
-quietly su snap_val_fcpi  if e(sample) == 1 
+quietly su snap_val_fcpi_pos  if e(sample) == 1 
 estadd scalar outcome_mean = r(mean)
 eststo m3
 
@@ -234,7 +234,7 @@ esttab m*, b p keep($ui_ddd ) order(uijul_fcpi lguijul_fcpi alt_totwks) title(`"
 /* output to excel or latex */
 if $export_option == 1{								 
 #delimit ;
-esttab m1 m2 m3 m4 m5 m6 m7 m8 using "Results\Mar_DDD", 
+esttab m1 m2 m3 m4 using "Results\Mar_DDD", 
 			csv replace label  order($ui_ddd) keep( $ui_ddd) f  b(3)  se(3) nogaps
 	        stats(outcome_mean r2_a N N_clust , fmt(3 3 0 0) 
 			labels(`"Mean Dependent Variable"' `"Adjusted \$R^2\$"' `"Observations"' `"City Clusters"')) 

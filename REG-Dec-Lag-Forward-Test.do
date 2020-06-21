@@ -17,7 +17,7 @@ do "Scripts\Preamble-Sample-Criteria.do"
 
 global wgt   " [pw = fssuppwth] "
 global ui_lf   uijul_cdep_fcpi    uijul_cdep_fcpi_l1 uijul_cdep_fcpi_l2  uijul_cdep_fcpi_f1    uijul_cdep_fcpi_f2  
-global control_event $controls    F1_* L1_*  L2_*
+global control_event $controls  F1_* L1_*  L2_* 
 
 
 // create the indicator for Unemployed HH

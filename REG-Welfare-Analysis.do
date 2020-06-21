@@ -18,6 +18,7 @@ use "Processed\ASEC_REG.dta", clear
 
 *<< IMPORT THE CONTROLS AND SAMPLES CRITERIOR >>
 do "Scripts\Preamble-Controls.do"
+do "Scripts\Preamble-Sample-Criteria.do"
 global wgt   "[pw = asecwth]"
 
 // create the indicator for Unemployed HH
@@ -32,7 +33,7 @@ label var eligible  "UI Eligible"
 
 do "Scripts\Preamble-Eligible-Interactions.do"
 
-global  indicatorswel `"indicate("State Characteristics = unemploymentrate" "State Welfare Characteristics = snap_3p" "Year FE = *.year" "State FE = *.gestfips" "State Linear Trend = *.year_trend")"'  /// 
+global  indicatorswel `"indicate("State Characteristics = unemploymentrate" "State Welfare Characteristics = snap_2p" "Year FE = *.year" "State FE = *.gestfips" "State Linear Trend = *.year_trend")"'  /// 
 
 
 quietly reg snap_take $ui  $controls $fest $wgt   if eligible == 1,  cluster(state)	
@@ -47,6 +48,7 @@ keep if e(sample) == 1
 /***** IMPACT OF MAXIMUM UI ON ACTUAL UI EXPENDITURE *****/
 duplicates drop state year, force
 
+cap est clea
 *** Average Actual weekly UI
 reg actual_UI_AWB $ui $zvar1 $zvar2 $fes, cluster(state)
 su actual_UI_AWB if e(sample) == 1
@@ -65,7 +67,7 @@ eststo m3
 reg actual_UI  $ui $zvar1 $zvar2 $fest, cluster(state)
 eststo m4
 
-esttab m*, b p keep($ui) title(`"The Impact of UI Expenditure"') label   star(* 0.10 ** 0.05 *** 0.01)   varwidth(50)  ///
+esttab m1 m2 m3 m4, b p keep($ui) title(`"The Impact of UI Expenditure"') label   star(* 0.10 ** 0.05 *** 0.01)   varwidth(50)  ///
                        	$indicatorswel  /// 
 						stats(outcome_mean r2_a N N_clust , fmt(3 3 0 0) labels(`"Outcome Mean"' `"Adjusted \$R^2\$"' `"Observations"' `"City Clusters"')) ///
 						mtitle("Weekly UI" "" "Total UI" "")
@@ -74,7 +76,7 @@ esttab m*, b p keep($ui) title(`"The Impact of UI Expenditure"') label   star(* 
 /* output to excel or latex */						 
 #delimit ;
 esttab m1 m2 m3 m4 using "Results\Welfare_UI", 
-			csv replace label  order($ui) keep( $ui $ui) f  b(3)  se(3)  nogaps
+			csv replace label  order($ui) keep( $ui) f  b(3)  se(3)  nogaps
 	        stats(outcome_mean r2_a N N_clust , fmt(3 3 0 0) 
 			labels(`"Mean Dependent Variable"' `"Adjusted \$R^2\$"' `"Observations"' `"City Clusters"')) 
 			$indicatorswel
@@ -88,6 +90,12 @@ esttab m1 m2 m3 m4 using "Results\Welfare_UI",
 
 
 
+
+
+
+
+
+* << CPS March UI & SNAP By state and year >>
 
 use "Processed\ASEC_REG.dta", clear
 // UI Households
@@ -113,3 +121,7 @@ replace ui_inc = . if ui_inc <= 0
 collapse  (mean) ui_inc  (mean) ui_take_hh  (sum) ui_hh = ui_take_hh (sum) snap_val  (mean) snap_take (sum) snap_take_hh  = snap_take  (mean) snap_take_ui  (sum) snap_take_ui_hh = snap_take_ui  [iw = asecwth] , by(state year)
 export excel using "Results\UI_SNAP_State_Year.xlsx", replace firstrow(var)
 restore
+
+
+
+

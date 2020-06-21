@@ -120,9 +120,8 @@ esttab m* using "Results\Mar_BalanceTest",
 			csv replace label  order($ui) keep( $ui) f  b(3)  se(3) nogaps
 	        stats(outcome_mean r2_a N N_clust , fmt(3 3 0 0) 
 			labels(`"Mean Dependent Variable"' `"Adjusted \$R^2\$"' `"Observations"' `"City Clusters"')) 
-            indicate("State-Level Welfare Policies = snap_3p" "State-Level Economic Attributes = unemploymentrate" "Household Characteristics =  hh_edu_hs_r"  "Year FE = *.year" "State FE = *.gestfips" "State Linear Trend = *.year_trend")  
-			mgroups("HH Age" "" "HH Married" "" "Share of LHS" "" "Share of HS" "" "Share of Some College" "" "Share of Age (20-30)" "" "Share of Age (30-40)" "" "Share of Age (40-55)" ""
-			"One-Person Family" "" "Regular Family" "" "Large Family" "" "Presence of Child Under 6" "", pattern(1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0) )           
+			$indicators
+			mgroups("`m_titles'", pattern(1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0) )           
 			title("Impact of UI on Family Characteristics")  
 			addnote("$notes1" "$notes2" "$notes3" "$notes4" "$notes5") 
 			star(* 0.10 ** 0.05 *** 0.01) ;
